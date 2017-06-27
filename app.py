@@ -1,5 +1,6 @@
 from tornado import websocket, web, ioloop, gen, escape
 import json
+import os
 
 # list of clients to push the data to
 clients = []
@@ -13,11 +14,14 @@ class IndexHandler(BaseHandler):
     """
     Class to handle the landing page
     """
+    @web.asynchronous
     @web.authenticated
     def get(self):
         name = escape.xhtml_escape(self.current_user)
         items = ['item1', 'item2', 'item3']
-        self.render("index.html", title=name, items=items)
+        self.render("index.html",
+                    title="Fancy Title",
+                    items=items)
 
 
 class LoginHandler(BaseHandler):
@@ -66,8 +70,9 @@ class RealtimeHandler(websocket.WebSocketHandler):
         return True
     def open(self):
         if self.get_secure_cookie("user"):
-            print("Authenticated")
             self.write_message("Socket opened")
+            if not self in clients:
+                clients.append(self)
         else:
             self.close(code=401, reason="Unauthorized")
             return
@@ -76,6 +81,8 @@ class RealtimeHandler(websocket.WebSocketHandler):
         print("Message Recieved: " + message)
 
     def on_close(self):
+        if self in clients:
+            clients.remove(self)
         print("Socket closed")
 
 
@@ -83,7 +90,18 @@ class ApiHandler(web.RequestHandler):
     """
     Class to handle the data received
     """
-    pass
+    def get(self):
+        pass
+
+    def post(self, *args):
+        # Got an image? Push it to the clients
+        self.file1 = self.request.files['file1'][0]
+        self.orig_fname = self.file1['filename']
+        print("Got :"+str(self.orig_fname))
+        for client in clients:
+            client.write_message(self.file1['body'], binary=True)
+        # Send OK to the uploader and close
+        self.write("OK")
 
 
 settings = {
@@ -92,6 +110,7 @@ settings = {
     'template_path': 'templates/',
     'compiled_template_cache': 'False',
     'debug': True,
+    'static_path': os.path.join(os.path.dirname(__file__), "static")
 }
 
 app = web.Application(
@@ -99,6 +118,7 @@ app = web.Application(
         (r'/login', LoginHandler),
         (r'/logout', LogoutHandler),
         (r'/realtime', RealtimeHandler),
+        (r'/upload', ApiHandler),
         (r'/', IndexHandler),
     ],
     **settings,
