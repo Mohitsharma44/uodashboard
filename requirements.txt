@@ -1,0 +1,5 @@
+numpy
+scipy
+pillow
+watchdog
+pycurl
