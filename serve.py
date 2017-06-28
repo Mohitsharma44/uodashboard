@@ -1,4 +1,4 @@
-"""OA
+"""
 Module to Upload file to the server
 """
 
@@ -79,8 +79,9 @@ def topng(fname=None, rot=1, height=3840, width=5120, outpath=None):
     outpath: str
         *only* directory to output the png file to
     """
-    img = np.rot90(_read_raw(fname, width, height), rot)
-    if img:
+    imgarr = _read_raw(fname, width, height)
+    if imgarr:
+        img = np.rot90(imgarr, rot)
         im  = toimage(img)
         outfile = os.path.join(outpath,
                                os.path.basename(fname)[:-3]+str("png"))
@@ -95,14 +96,15 @@ class FsHandler(FileSystemEventHandler):
         if event.is_directory:
             pass
         else:
+            print(event.src_path)
             fname = event.src_path
             if fname.endswith("raw"):
                 outfile = topng(event.src_path)
                 ## Pulling cam name from filename. Make sure format
                 ## is consistent througout
-                cam_name = os.path.basename(outfile).split('_')[1]
-                uploadFile(outfile, cam_name)
-            return event.src_path
+                if outfile:
+                    cam_name = os.path.basename(outfile).split('_')[1]
+                    uploadFile(outfile, cam_name)
 
 
 class MonitorDir():
