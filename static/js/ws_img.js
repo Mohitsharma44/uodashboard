@@ -90,8 +90,7 @@ ws.onmessage = function(ev){
             "Last updated: ".bold().fontsize(3) + updatetime ;
     }
     // Remove pre_panel elements
-    pre_panel_text.outerHTML = "";
-    delete pre_panel_text;
+    pre_panel_text.outerHTML = " </br> ";
 
 };
 
