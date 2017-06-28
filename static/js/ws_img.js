@@ -9,8 +9,8 @@ var optional_d6_text = document.getElementById("optional_d6_text");
 var optional_d9_text = document.getElementById("optional_d9_text");
 var message_received_once = false;
 var arrayBuffer;
-var img_height = '525px';
-var img_width = '525px';
+var img_height = '600';
+var img_width = '600';
 var ws = new WebSocket("ws://localhost:8888/realtime");
 var $message = $("#message");
 
