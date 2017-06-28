@@ -1,7 +1,7 @@
 //
 // Script to grab the image, encode it and return
 //
-//var pre_panel_img = document.getElementById("AudubonCamD9");
+
 var pre_panel_text = document.getElementById("pre_panel_text");
 var d6img = document.getElementById("AudubonCamD6");
 var d9img = document.getElementById("AudubonCamD9");
@@ -9,8 +9,8 @@ var optional_d6_text = document.getElementById("optional_d6_text");
 var optional_d9_text = document.getElementById("optional_d9_text");
 var message_received_once = false;
 var arrayBuffer;
-var img_height = '372px';
-var img_width = '544px';
+var img_height = '525px';
+var img_width = '525px';
 var ws = new WebSocket("ws://localhost:8888/realtime");
 var $message = $("#message");
 
@@ -68,9 +68,7 @@ ws.onmessage = function(ev){
         d6img.style.height = img_height;
         d6img.style.width = img_width;
         d6img.style.margin = "0 auto";
-        optional_d6_text.innerHTML =
-            "File name: ".bold().fontsize(3) + info + "</br>" +
-            "Last updated: ".bold().fontsize(3) + updatetime ;
+        optional_d6_text.innerHTML = "Last updated: ".bold().fontsize(3) + updatetime ;
     }
     else if (cam_name === "d9"){
         // Hacky way to remove `b''` from bytes (when serving via python3)
@@ -85,9 +83,7 @@ ws.onmessage = function(ev){
         d9img.style.width = img_width;
         d9img.style.margin = "0 auto";
 
-        optional_d9_text.innerHTML =
-            "File name: ".bold().fontsize(3) + info + "</br>" +
-            "Last updated: ".bold().fontsize(3) + updatetime ;
+        optional_d9_text.innerHTML = "Last updated: ".bold().fontsize(3) + updatetime ;
     }
     // Remove pre_panel elements
     pre_panel_text.outerHTML = " </br> ";
