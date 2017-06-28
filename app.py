@@ -1,6 +1,8 @@
-from tornado import websocket, web, ioloop, gen, escape
-import json
 import os
+import json
+import time
+import base64
+from tornado import websocket, web, ioloop, gen, escape
 
 # list of clients to push the data to
 clients = []
@@ -98,8 +100,12 @@ class ApiHandler(web.RequestHandler):
         self.file1 = self.request.files['file1'][0]
         self.orig_fname = self.file1['filename']
         print("Got :"+str(self.orig_fname))
+        data = {"fname": str(self.orig_fname),
+                "updatetime": str(time.strftime("%c")),
+                "img": str(base64.b64encode(self.file1['body']))
+        }
         for client in clients:
-            client.write_message(self.file1['body'], binary=True)
+            client.write_message(data)
         # Send OK to the uploader and close
         self.write("OK")
 
