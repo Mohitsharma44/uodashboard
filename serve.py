@@ -20,13 +20,13 @@ def uploadFile(filename):
         response returned by the server.
     """
     URL = "localhost:8888/upload"
-    ID = "5 MTC"
+    cam_name = "d6"
     curl = pycurl.Curl()
     response = BytesIO()
 
     curl.setopt(curl.POST, 1)
     curl.setopt(curl.URL, URL)
-    curl.setopt(curl.HTTPHEADER, ['id: ' + ID])
+    curl.setopt(curl.HTTPHEADER, ['cam_name: ' + cam_name])
     curl.setopt(curl.HTTPPOST, [('file1',
                                  (curl.FORM_FILE,
                                   os.path.abspath(filename))

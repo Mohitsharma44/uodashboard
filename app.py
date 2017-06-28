@@ -22,8 +22,9 @@ class IndexHandler(BaseHandler):
         name = escape.xhtml_escape(self.current_user)
         items = ['item1', 'item2', 'item3']
         self.render("index.html",
-                    title="Fancy Title",
-                    items=items)
+                    title="UO Live",
+                    cam1="D6",
+                    cam2="D9")
 
 
 class LoginHandler(BaseHandler):
@@ -100,7 +101,8 @@ class ApiHandler(web.RequestHandler):
         self.file1 = self.request.files['file1'][0]
         self.orig_fname = self.file1['filename']
         print("Got :"+str(self.orig_fname))
-        data = {"fname": str(self.orig_fname),
+        data = {"cam_name": str(self.request.headers['cam_name']),
+                "fname": str(self.orig_fname),
                 "updatetime": str(time.strftime("%c")),
                 "img": str(base64.b64encode(self.file1['body']))
         }
