@@ -1,23 +1,40 @@
 <html>
+  <head>
+    <link rel="stylesheet" href="{{ static_url('css/bootstrap.min.css') }}">
+    <script src="{{ static_url('js/jquery.min.js') }}"></script>
+    <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
+  </head>
   <body>
-    <form action="/login" method="post" id="login_form">
-      <fieldset>
-        <label for="username">Username</label>
-        <input class="text-input" id="username" name="username" type="text" value="">
-      </fieldset>
-
-      <fieldset>
-        <label for="password">Password</label>
-        <input class="text-input" id="password" name="password" type="password" value="">
-      </fieldset>
-
-      <fieldset>
-        <span class="errormessage"></span>
-      </fieldset>
-
-      <div id="form_btn">
-        <input id="signin-btn" class="btn btn-blue" type="submit" value="Sign In" tabindex="3">
+    <p>Hello</p>
+    <div id="myModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" action="/login" method="post" id="login_form">
+              <div class="form-group has-warning">
+                <label class="control-label" for="inputWarning">Input warning</label>
+                <input type="text" class="form-control" id="username" name="username" value="Username">
+              </div>
+              <div class="form-group has-warning">
+                <label class="control-label" for="inputWarning">Input warning</label>
+                <input type="password" class="form-control" id="password" name="password" value="Passzord">
+              </div>
+              <p align="center">Enter Login Information</p>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" value="Sign In">Login</button>
+            <button type="reset" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          </div>
+          </form>
+        </div>
       </div>
-    </form>
+    </div>
+    <script>
+      $("#myModal").modal('show');
+    </script>
   </body>
 </html>

@@ -1,6 +1,8 @@
 <html>
   <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ static_url('css/bootstrap.min.css') }}">
+    <script src="{{ static_url('js/jquery.min.js') }}"></script>
+    <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
     <title>{{ title }}</title>
   </head>
   <body>
@@ -12,7 +14,7 @@
     <hr>
       WebSocket status : <span id="message"></span>
     <hr>
-    <img id="AudubonCamD6" width="640" height="480"></img>
+    <img id="AudubonCamD6"></img>
     <p id="optional_text"></p>
     <script src="{{ static_url('js/ws_img.js') }}"></script>
   </body>
