@@ -11,7 +11,8 @@ var message_received_once = false;
 var arrayBuffer;
 var img_height = '600';
 var img_width = '600';
-var ws = new WebSocket("ws://localhost:8888/realtime");
+//var ws = new WebSocket("ws://128.122.72.52:8888/realtime");
+var ws = new WebSocket("ws://dashsense.cusp.nyu.edu/realtime");
 var $message = $("#message");
 
 ws.binaryType = 'arraybuffer';
@@ -43,7 +44,7 @@ ws.onopen = function(){
 	    pre_panel_text.innerHTML = message;
 	    pre_panel_text.style.textAlign="center";
 	}
-    }, 20000);
+    }, 50000);
 };
 
 ws.onmessage = function(ev){
@@ -93,6 +94,7 @@ ws.onmessage = function(ev){
 ws.onclose = function(ev){
     $message.attr("class", 'label label-important');
     $message.text('Not Live');
+    console.log("connection was closed");
 };
 
 ws.onerror = function(ev){
@@ -102,4 +104,5 @@ ws.onerror = function(ev){
     message = message.fontsize("4").fontcolor("#000000").bold();
     optional_text.innerHTML = message;
     optional_text.style.textAlign="center";
+    console.log("Error in establishing connection");
 };
