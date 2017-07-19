@@ -1,0 +1,7 @@
+name: uodash
+dependencies:
+    - numpy
+    - scipy
+    - pillow
+    - watchdog
+    - pycurl

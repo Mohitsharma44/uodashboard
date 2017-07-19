@@ -5,11 +5,25 @@ Module to Upload file to the server
 import pycurl
 import os
 import time
+import asyncore
+import pyinotify
 import numpy as np
 from io import BytesIO
-from scipy.misc import toimage
+from scipy.misc import toimage, imresize
+from collections import deque
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from watchdog.events import PatternMatchingEventHandler
+
+MONITOR_DIR = "/projects/projects/project-audubon_uo/datamarts/audubon_imgs_live"
+wm = pyinotify.WatchManager()
+mask = pyinotify.IN_DELETE | pyinotify.IN_CREATE | pyinotify.IN_MOVED_TO # watched events
+
+# Rotation mapping for Audubon Cameras
+rotation_mapping = {
+    "d6": 3,
+    "d9": 1,
+}
 
 def uploadFile(filename, cam_name):
     """
@@ -26,7 +40,7 @@ def uploadFile(filename, cam_name):
     response: BytesIO
         response returned by the server.
     """
-    URL = "localhost:8888/upload"
+    URL = "128.122.72.52:8888/upload"
     curl = pycurl.Curl()
     response = BytesIO()
 
@@ -45,22 +59,28 @@ def uploadFile(filename, cam_name):
         print("Successfully Uploaded")
     else:
         print("Cannot Upload: " + str(response.getvalue()))
+    os.remove(os.path.abspath(filename))
     return response
 
-def _read_raw(fname, width, height):
+def _read_raw(fname, width, height, binfac=1):
     """
     Function to read a binary raw image
     Parameters
     ----------
     fname: str
         absolute file path to read the image from
+    width: int
+    height: int
+    binfac: int
+        If the returned array should be binned
     Returns
     -------
     np.ndarray:
         2D numpy array
     """
     if os.path.getsize(fname) == width*height:
-        return np.fromfile(fname, np.uint8).reshape(height, width)
+        # Return binned image by bin factor
+        return np.fromfile(fname, np.uint8).reshape(height, width)[::binfac, ::binfac]
     else:
         print("ERROR: File is not in binary format or the size is not correct")
         return None
@@ -79,62 +99,32 @@ def topng(fname=None, rot=1, height=3840, width=5120, outpath=None):
     outpath: str
         *only* directory to output the png file to
     """
-    imgarr = _read_raw(fname, width, height)
-    if imgarr:
+    imgarr = _read_raw(fname, width, height, binfac=1)
+    if imgarr is not None:
         img = np.rot90(imgarr, rot)
-        im  = toimage(img)
+        resized_img = imresize(img, 60)
+        im  = toimage(resized_img)
         outfile = os.path.join(outpath,
                                os.path.basename(fname)[:-3]+str("png"))
         im.save(outfile)
         return outfile
 
-class FsHandler(FileSystemEventHandler):
-    """
-    Class to handle events when a new file is created
-    """
-    def on_created(self, event):
-        if event.is_directory:
-            pass
-        else:
-            print(event.src_path)
-            fname = event.src_path
-            if fname.endswith("raw"):
-                outfile = topng(event.src_path)
-                ## Pulling cam name from filename. Make sure format
-                ## is consistent througout
+class EventHandler(pyinotify.ProcessEvent):
+    def process_IN_MOVED_TO(self, event):
+        if event.pathname.endswith(".raw"):
+            try:
+                filename = event.pathname
+                rot = rotation_mapping[os.path.basename(filename).split('_')[1]]
+                outfile = topng(fname=filename, rot=rot, outpath='./')
                 if outfile:
                     cam_name = os.path.basename(outfile).split('_')[1]
                     uploadFile(outfile, cam_name)
+            except Exception as ex:
+                print("ERROR: "+str(ex))
 
-
-class MonitorDir():
-    """
-    Function to monitor a directory for new files
-    Parameters
-    ----------
-    path: str
-        path to monitor
-    """
-    def __init__(self, path):
-        self.path = path
-        self.fs_observer = Observer()
-
-    def run(self):
-        self.fs_event_handler = FsHandler()
-        self.fs_observer.schedule(self.fs_event_handler,
-                                  self.path,
-                                  recursive=False)
-        self.fs_observer.start()
-        try:
-            while True:
-                time.sleep(1)
-        except KeyboardInterrupt:
-            print("\nWARNING: Stop Monitoring")
-            self.fs_observer.stop()
-        self.fs_observer.join()
 
 if __name__ == "__main__":
-    path_to_monitor = os.path.abspath("./")
-    print("Monitoring: ", path_to_monitor)
-    monit = MonitorDir(path_to_monitor)
-    monit.run()
+    notifier = pyinotify.AsyncNotifier(wm, EventHandler())
+    wdd = wm.add_watch(MONITOR_DIR, mask, rec=True)
+    print("Monitoring: ", MONITOR_DIR)
+    asyncore.loop()
