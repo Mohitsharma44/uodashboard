@@ -2,6 +2,7 @@ import os
 import json
 import time
 import base64
+from io import StringIO
 from tornado import websocket, web, ioloop, gen, escape
 
 # list of clients to push the data to
@@ -20,7 +21,6 @@ class IndexHandler(BaseHandler):
     @web.authenticated
     def get(self):
         name = escape.xhtml_escape(self.current_user)
-        items = ['item1', 'item2', 'item3']
         self.render("index.html",
                     title="UO Live",
                     cam1="D6",
@@ -98,7 +98,10 @@ class ApiHandler(web.RequestHandler):
 
     def post(self, *args):
         # Got an image? Push it to the clients
+        #print(self.request.body)
         self.file1 = self.request.files['file1'][0]
+        with open("test.png", "wb") as fh:
+            fh.write(self.file1.body)
         self.orig_fname = self.file1['filename']
         print("Got :"+str(self.orig_fname))
         data = {"cam_name": str(self.request.headers['cam_name']),

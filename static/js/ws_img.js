@@ -3,18 +3,23 @@
 //
 
 var pre_panel_text = document.getElementById("pre_panel_text");
+var post_panel_text = document.getElementById("post_panel_text");
 var d6img = document.getElementById("AudubonCamD6");
 var d9img = document.getElementById("AudubonCamD9");
 var optional_d6_text = document.getElementById("optional_d6_text");
 var optional_d9_text = document.getElementById("optional_d9_text");
 var message_received_once = false;
 var arrayBuffer;
-var img_height = '600';
-var img_width = '600';
-//var ws = new WebSocket("ws://128.122.72.52:8888/realtime");
-var ws = new WebSocket("ws://dashsense.cusp.nyu.edu/realtime");
+var img_height = '500';
+var img_width = '500';
+var ws = new WebSocket("ws://localhost:8888/realtime");
+//var ws = new WebSocket("ws://dashsense.cusp.nyu.edu/realtime");
 var $message = $("#message");
-
+var $d6_tl = $("#d6_timelapse");
+var $d9_tl = $("#d9_timelapse");
+// Hide timelapse video at first
+$d6_tl.hide();
+$d9_tl.hide();
 ws.binaryType = 'arraybuffer';
 
 ws.onopen = function(){
@@ -37,14 +42,21 @@ ws.onopen = function(){
 	if (!message_received_once){
 	    $message.attr("class", 'label label-warning');
 	    $message.text('Error');
-	    var message = "Connecting to the Live Feed is taking longer than usual.</br>" +
-                "Are you sure the cameras are supposed to be streaming ? </br>" +
-                "If Yes, then contact: mohit.sharma@nyu.edu";
-	    message = message.fontsize("4").fontcolor("#000000").bold();
-	    pre_panel_text.innerHTML = message;
+	    var pre_message = "Connecting to the Live Feed is taking longer than usual.</br>" +
+                "While I try to connect, here are the timelapse videos from previous night";
+	    pre_message = pre_message.fontsize("4").fontcolor("#000000").bold();
+	    pre_panel_text.innerHTML = pre_message;
 	    pre_panel_text.style.textAlign="center";
+            // Remind the timings when feed is live
+            var post_message = "Cameras are generally live between 9pm and 6am";
+            post_message = post_message.fontsize("3").fontcolor("#D3D3D3").bold();
+            post_panel_text.innerHTML = post_message;
+            post_panel_text.style.textAlign="center";
+            // If No Live feed, Play time lapse video
+            $d6_tl.show();
+            $d9_tl.show();
 	}
-    }, 50000);
+    }, 2000);
 };
 
 ws.onmessage = function(ev){
@@ -56,6 +68,9 @@ ws.onmessage = function(ev){
     message_received_once = true;
     $message.attr("class", 'label label-success');
     $message.text("Live");
+    // hide the timelapse if it was playing
+    $d6_tl.hide();
+    $d9_tl.hide();
     // Set the image based on tag
     if (cam_name === "d6"){
         // Hacky way to remove `b''` from bytes (when serving via python3)
@@ -92,6 +107,8 @@ ws.onmessage = function(ev){
 };
 
 ws.onclose = function(ev){
+    $d6_tl.show();
+    $d9_tl.show();
     $message.attr("class", 'label label-important');
     $message.text('Not Live');
     console.log("connection was closed");
@@ -105,4 +122,6 @@ ws.onerror = function(ev){
     optional_text.innerHTML = message;
     optional_text.style.textAlign="center";
     console.log("Error in establishing connection");
+    $d6_tl.show();
+    $d9_tl.show();
 };

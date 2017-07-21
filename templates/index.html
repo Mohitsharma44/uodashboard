@@ -20,6 +20,9 @@
           <h3 class="panel-title">Camera {{ cam1 }}</h3>
         </div>
         <div class="panel-body">
+          <video id="d6_timelapse" style="display:block; margin: 0 auto;" width="500" height="400" autoplay>
+            <source src="/static/d6.mp4" type="video/mp4">
+          </video>
           <img id="AudubonCamD6"></img>
           <p id="optional_d6_text"></p>
         </div>
@@ -31,10 +34,16 @@
           <h3 class="panel-title">Camera {{ cam2 }}</h3>
         </div>
         <div class="panel-body">
+          <video id="d9_timelapse" style="display:block; margin: 0 auto;" width="500" height="400" autoplay>
+            <source src="/static/d9.mp4" type="video/mp4">
+          </video>
           <img id="AudubonCamD9"></img>
           <p id="optional_d9_text"></p>
         </div>
       </div>
+    </div>
+    <div>
+      <p id="post_panel_text"></p>
     </div>
     <script src="{{ static_url('js/ws_img.js') }}"></script>
     <!-- Footer -->
