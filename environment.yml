@@ -1,7 +1,9 @@
 name: uodash
 dependencies:
+    - paramiko
     - numpy
     - scipy
     - pillow
     - pip
     - pycurl
+    - matplotlib
