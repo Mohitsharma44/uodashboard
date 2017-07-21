@@ -56,7 +56,7 @@ ws.onopen = function(){
             $d6_tl.show();
             $d9_tl.show();
 	}
-    }, 2000);
+    }, 20000);
 };
 
 ws.onmessage = function(ev){
