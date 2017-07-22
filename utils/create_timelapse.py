@@ -87,7 +87,8 @@ def _create_timelapse(cam_name, pngdir, out_dir):
     """
     # ffmpeg -r 24 -f image2 -s 500x500 -pix_fmt gray \
     # -pattern_type glob -i '2017-07-19png/*d6*.png' -vcodec libx264 -crf 25 d6.mp4
-    subprocess.call(["ffmpeg -r 24"
+    subprocess.call(["ffmpeg -hide_banner -loglevel panic"
+                     + " -r 24"
                      + " -f image2"
                      + " -s 500x500"
                      + " -pix_fmt gray"
@@ -96,7 +97,8 @@ def _create_timelapse(cam_name, pngdir, out_dir):
                      + " -vcodec libx264"
                      + " -crf 25"
                      + " {outfile}.mp4".format(outfile=os.path.join(out_dir, 
-                                                                    cam_name))], 
+                                                                    cam_name))
+                     + " -y"], 
                     shell=True)
 
 if __name__ == "__main__":
@@ -108,11 +110,11 @@ if __name__ == "__main__":
     inpath  = os.path.join(basepath, 
                            "{}-{:02d}-{:02d}_night".format(today.year,
                                                            today.month,
-                                                           today.day-2)) 
+                                                           today.day-1)) 
     pngdir  = os.path.join(basepath, 
                            "{}-{:02d}-{:02d}_png".format(today.year,
                                                          today.month,
-                                                         today.day-2))
+                                                         today.day-1))
     if not os.path.exists(pngdir):
         os.mkdir(pngdir)
     # Get all the files
