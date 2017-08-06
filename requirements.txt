@@ -4,3 +4,4 @@ pillow
 watchdog
 pycurl
 tornado
+pyinotify
