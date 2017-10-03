@@ -10,7 +10,7 @@ import numpy as np
 import multiprocessing as mp
 import matplotlib.pyplot as plt
 from scipy.misc import toimage
-from datetime import datetime
+import datetime
 from sftp import create_sftp_client
 counter = 0
 
@@ -102,19 +102,20 @@ def _create_timelapse(cam_name, pngdir, out_dir):
                     shell=True)
 
 if __name__ == "__main__":
-    today = datetime.now()
+    today = datetime.datetime.now()
+    yesterday = today - datetime.timedelta(days=1)
     print("[Starting]: ", today)
     basepath= os.getenv("audubon_datamart")
     remote_tl_dir = os.getenv("dashsense_tl_dir")
     tl_outdir = basepath
     inpath  = os.path.join(basepath, 
-                           "{}-{:02d}-{:02d}_night".format(today.year,
-                                                           today.month,
-                                                           today.day-1)) 
+                           "{}-{:02d}-{:02d}_night".format(yesterday.year,
+                                                           yesterday.month,
+                                                           yesterday.day)) 
     pngdir  = os.path.join(basepath, 
-                           "{}-{:02d}-{:02d}_png".format(today.year,
-                                                         today.month,
-                                                         today.day-1))
+                           "{}-{:02d}-{:02d}_png".format(yesterday.year,
+                                                         yesterday.month,
+                                                         yesterday.day))
     if not os.path.exists(pngdir):
         os.mkdir(pngdir)
     # Get all the files
@@ -126,7 +127,7 @@ if __name__ == "__main__":
     d9_files  = sorted(glob.glob(d9_path+"*.raw"), key=os.path.getmtime)
     len_d6 = len(d6_files)
     len_d9 = len(d9_files)
-    # Go ballistic with the processors
+    # Go ballistic with the processor
     p = mp.Pool(60)
     for i, _ in enumerate(p.imap_unordered(_topng, zip(iter(d6_files), itertools.repeat(3), itertools.repeat(pngdir)))):
         printProgressBar(i, len_d6, prefix='D6 Progress:', suffix='Complete', length=50)
@@ -137,6 +138,7 @@ if __name__ == "__main__":
     print()
     print()
     print("Creating Timelapse ... ")
+    print(pngdir)
     _create_timelapse(cam_name="d6", pngdir=pngdir, out_dir=tl_outdir)
     _create_timelapse(cam_name="d9", pngdir=pngdir, out_dir=tl_outdir)
     host = "dashsense.cusp.nyu.edu"
@@ -151,4 +153,4 @@ if __name__ == "__main__":
     sftpclient.close()
     # (Force-)Cleanup the pngdir
     shutil.rmtree(pngdir, ignore_errors=True)
-    print("[Finished]: ",datetime.now())
+    print("[Finished]: ",datetime.datetime.now())
