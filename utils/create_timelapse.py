@@ -57,9 +57,9 @@ def convert_to_png(f, rot, outpath):
         global counter
         counter += 1
         img = np.fromfile(f, np.uint8).reshape(3840, 5120)
-        grn = img0[::2, 1::2]
-        red = img0[::2, ::2]
-        blu = img0[1::2, 1::2]
+        grn = img[::2, 1::2]
+        red = img[::2, ::2]
+        blu = img[1::2, 1::2]
         im  = toimage(np.rot90(np.dstack((red, grn, blu)), rot))
         immtime = str(os.path.getmtime(f))
         cam_type = os.path.basename(f).split('_')[1]
