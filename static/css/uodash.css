@@ -5,9 +5,22 @@ html {
     min-height: 100%;
 }
 body {
+    background-image: url('/static/imgs/cuspuo_logo.jpg');
+    width: auto;
+    height: auto;
+    background-position: center;
     /* Margin bottom by footer height */
     margin-bottom: 60px;
 }
+
+.bottom-text {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    margin-bottom: 100px;
+    margin-left:-150px
+}
+
 .footer {
     position: absolute;
     bottom: 0;
