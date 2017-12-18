@@ -13,7 +13,7 @@ class BaseHandler(web.RequestHandler):
         return self.get_secure_cookie("user")
 
 
-class IndexHandler(BaseHandler):
+class AudubonHandler(BaseHandler):
     """
     Class to handle the landing page
     """
@@ -21,15 +21,36 @@ class IndexHandler(BaseHandler):
     @web.authenticated
     def get(self):
         name = escape.xhtml_escape(self.current_user)
-        self.render("index.html",
+        self.render("audubon.html",
                     title="UO Live",
                     cam1="D6",
                     cam2="D9")
 
+        
+class HadiveHandler(BaseHandler):
+    """
+    Class to handle the Hadive project page
+    """
+    @web.asynchronous
+    @web.authenticated
+    def get(self):
+        name = escape.xhtml_escape(self.current_user)
+        self.render("hadive.html",
+                    title="HaDiVe")
 
+class IndexHandler(web.RequestHandler):
+    """
+    Class to handle index page
+    """
+    def get(self):
+        self.render("index.html", title="index")
+        
 class LoginHandler(BaseHandler):
     def get(self):
         try:
+            if self.get_current_user():
+                self.redirect(self.get_argument('next', '/'))
+                return
             error_msg = self.get_argument("error")
         except:
             error_msg = ""
@@ -41,7 +62,8 @@ class LoginHandler(BaseHandler):
         # __TODO: Steps for Authentication
         if username == "mohit":
             self.set_current_user(username)
-            self.redirect(self.get_argument("next", u"/"))
+            self.redirect(self.request.headers.get('referer', '/'))
+            #self.redirect(self.get_argument("next", u"/"))
         else:
             error_msg = u"?error=" + escape.url_escape("Login incorrect")
             self.redirect(u"/login" + error_msg)
@@ -131,10 +153,12 @@ app = web.Application(
         (r'/realtime', RealtimeHandler),
         (r'/upload', ApiHandler),
         (r'/', IndexHandler),
+        (r'/projects/audubon', AudubonHandler),
+        (r'/projects/hadive', HadiveHandler),
     ],
     **settings,
 )
 
 if __name__ == "__main__":
-    app.listen(30000)
+    app.listen(8888)
     ioloop.IOLoop.instance().start()
