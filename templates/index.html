@@ -4,48 +4,22 @@
     <link rel="stylesheet" href="{{ static_url('css/uodash.css') }}">
     <script src="{{ static_url('js/jquery.min.js') }}"></script>
     <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
-    <title>{{ title }}</title>
   </head>
   <body>
+    <!-- NavBar -->
     {% include "navbar.html" %}
     <!-- Main Body -->
-    <p class="lead" style="text-align:center">Urban Observatory / NYC Audubon</p>
-    Audubon stream status : <span id="message"></span>
-    <div>
-      <p id="pre_panel_text"></p>
-    </div>
-    <div class="col-lg-6">
-      <div class="panel panel-primary">
-        <div class="panel-heading">
-          <h3 class="panel-title">Camera {{ cam1 }}</h3>
-        </div>
-        <div class="panel-body">
-          <video id="d6_timelapse" style="display:block; margin: 0 auto;" width="500" height="400" autoplay loop>
-            <source src="/static/d6.mp4" type="video/mp4">
-          </video>
-          <img id="AudubonCamD6"></img>
-          <p id="optional_d6_text"></p>
-        </div>
+    <div class="login-placeholder-bg">
+      <h1 align="center">
+        <p class="lead">Urban Observatory / Audubon Site</p>
+      </h1>
+      <div class="center">
+        <img src="/static/imgs/cuspuo_logo.png">
+          <h2 align="center">
+            Comming Soon ...
+          </h2>
       </div>
     </div>
-    <div class="col-lg-6">
-      <div class="panel panel-warning">
-        <div class="panel-heading">
-          <h3 class="panel-title">Camera {{ cam2 }}</h3>
-        </div>
-        <div class="panel-body">
-          <video id="d9_timelapse" style="display:block; margin: 0 auto;" width="500" height="400" autoplay loop>
-            <source src="/static/d9.mp4" type="video/mp4">
-          </video>
-          <img id="AudubonCamD9"></img>
-          <p id="optional_d9_text"></p>
-        </div>
-      </div>
-    </div>
-    <div>
-      <p id="post_panel_text"></p>
-    </div>
-    <script src="{{ static_url('js/ws_img.js') }}"></script>
     <!-- Footer -->
     {% include "footer.html" %}
   </body>
