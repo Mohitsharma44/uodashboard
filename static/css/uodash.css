@@ -41,6 +41,47 @@ img {
     height: auto;
 }
 
+.map{
+    float:left;
+    width:640px;
+    height:460px;
+    background:rgba(0,0,0,0.1);
+    display:table-cell;
+}
+
+.side{
+    float:left;
+    width:330px;
+    height:200px;
+    background:rgba(0,0,0,0.1);
+    padding:15px;
+    display:table-cell;
+}
+
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.focus circle {
+    fill: none;
+    stroke: black;
+}
+
 .bottom-text {
     position: absolute;
     bottom: 0px;
