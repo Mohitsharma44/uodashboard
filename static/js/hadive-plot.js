@@ -5,10 +5,28 @@ var width = plotDiv.clientWidth;
 var height = plotDiv.clientHeight;
 var padding = 20;
 var margin = {top: 60, right: 30, bottom: 80, left: 70};
-var svg = d3.select(plotDiv).append("svg");
+var svg = d3.select(plotDiv)
+    .classed("svg-container", true) //container class to make it responsive
+    .append("svg")
+    .attr("preserveAspectRatio", "xMinYMin meet") //responsive SVG needs these 2 attributes and no width and height attr
+    .attr("viewBox", "0 0 1200 800")
+    .classed("svg-content-responsive", true); //class to make it responsive
 
 var x = d3.time.scale().range([0, width]);
 var y = d3.scale.linear().range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom").ticks(5);
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left"); //.ticks(10);
+
+var valueline = d3.svg.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.count); });
+
 
 var map = L.map("map", {center: [40.72, -73.95], zoom: 10});
 
@@ -32,6 +50,7 @@ function addDataToMap(data, map) {
 function camdesc(feature, layer) {
     //bind click
     layer.on('click', function (event) {
+        document.getElementById("map_placeholder").innerHTML=''
         document.getElementById("cam").innerHTML = "<img src='/static/imgs/collected_ims/" + feature.properties.name + ".jpg' style='max-width\
 :100%'></img>";
         document.getElementById("desc").innerHTML = "<p class='lead'>" + feature.properties.description + "</h3>";
@@ -128,7 +147,7 @@ function camdesc(feature, layer) {
                 .on("mouseover", function() { focus.style("display", null); })
                 .on("mouseout", function() { focus.style("display", "none"); })
                 .on("mousemove", mousemove);
-
+            
             function mousemove() {
                 var x0 = x.invert(d3.mouse(this)[0]),
                     i = bisectDate(data, x0, 1),
@@ -148,22 +167,3 @@ function camdesc(feature, layer) {
         });
     });
 }
-
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom").ticks(5);
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left"); //.ticks(10);
-
-var valueline = d3.svg.line()
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.count); });
-
-// Use the extracted size to set the size of an SVG element.
-svg
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");

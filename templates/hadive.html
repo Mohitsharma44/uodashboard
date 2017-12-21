@@ -40,6 +40,7 @@
           <div class="col-md-4 cam">
             <div class="row">
               <div class="col-md-12 cam", id="cam">
+                <small class="text-muted">Select a point on map to view camera info</small>
               </div>
               <br/>
               <div class="col-md-12 side", id="desc">
@@ -49,7 +50,10 @@
         </div>
         <br/><br/>
         <div class="row justify-context-md-center max-auto">
-          <div class="col-md-12 mh-100" style="width: 100px; height: 200px;" id="plot">
+          <div class="col-sm-12 mh-100" style="width: 20em; height: 10em;" id="plot">
+            <div class="map_placeholder" id="map_placeholder">
+              <small class="text-muted">Select a point on map to visualize pedestrian count</small>
+            </div>
           </div>
         </div>
       </div>
@@ -106,5 +110,5 @@
     <!-- Footer -->
     {% include "footer.html" %}
 
-</body>
+  </body>
 </html>
