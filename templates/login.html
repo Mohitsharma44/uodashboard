@@ -10,9 +10,6 @@
     {% include "navbar.html" %}
     <!-- Main Body -->
     <div class="login-placeholder-bg">
-      <h1 align="center">
-        <p class="lead">Urban Observatory / Audubon Site</p>
-      </h1>
       <div class="center">
         <img src="/static/imgs/cuspuo_logo.png">
           <h2 align="center">
@@ -26,18 +23,18 @@
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title">
-              <strong>Login</strong>
+              <p class="lead text-center">Login</p>
             </h4>
           </div>
           <div class="modal-body">
             <form class="form-horizontal" action="/login" method="post" id="login_form">
               <div class="form-group has-warning">
-                <label class="control-label" for="inputWarning">Username</label>
-                <input type="text" class="form-control" id="username" name="username" value="Username">
+                <label class="control-label" for="inputWarning" placeholder="Username"></label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username">
               </div>
               <div class="form-group has-warning">
-                <label class="control-label" for="inputWarning">Password</label>
-                <input type="password" class="form-control" id="password" name="password" value="Passzord">
+                <label class="control-label" for="inputWarning" placeholder="Password"></label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Passzord">
               </div>
               <p class="text-muted" align="right">All connections are being monitored
               </p>
