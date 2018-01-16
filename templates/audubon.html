@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ static_url('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ static_url('css/uodash.css') }}">
+    <script src="{{ static_url('js/jquery.min.js') }}"></script>
+    <script src="{{ static_url('js/tether.min.js') }}"></script>
+    <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    {% include "navbar.html" %}
+    <!-- Main Body -->
+    <p class="lead" style="text-align:center">Urban Observatory / NYC Audubon</p>
+    Audubon stream status : <span id="message"></span>
+    <div>
+      <p id="pre_panel_text"></p>
+    </div>
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="col-lg-5">
+          <div class="card border-success mb-3" style="max-width: 100rem;">
+            <div class="card-header">Broadband vision camera</div>
+            <div class="card-body text-success">
+              <h4 class="card-title">{{ cam1 }}</h4>
+              <div class="embed-responsive embed-responsive-1by1">
+                <video class="embed-responsive-item" id="d6_timelapse" style="display:block; margin: 0 auto;" width="640" height="480" autoplay loop>
+                  <source src="/static/timelapses/d6.mp4" type="video/mp4">
+                </video>
+                <img id="AudubonCamD6"></img>
+              </div>
+              <img id="AudubonCamD6"></img>
+              <p class="card-text" id="optional_d6_text"></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="card border-success mb-3" style="max-width: 100rem;">
+            <div class="card-header">Broadband vision camera</div>
+            <div class="card-body text-success">
+              <h4 class="card-title">{{ cam2 }}</h4>
+              <div class="embed-responsive embed-responsive-1by1">
+                <video class="embed-responsive-item" id="d6_timelapse" style="display:block; margin: 0 auto;" width="640" height="480" autoplay loop>
+                  <source src="/static/timelapses/d9.mp4" type="video/mp4">
+                </video>
+                <img id="AudubonCamD9"></img>
+              </div>
+              <img id="AudubonCamD9"></img>
+              <p class="card-text" id="optional_d9_text"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p id="post_panel_text"></p>
+    </div>
+    <script src="{{ static_url('js/ws_img.js') }}"></script>
+    <!-- Footer -->
+    {% include "footer.html" %}
+  </body>
+</html>

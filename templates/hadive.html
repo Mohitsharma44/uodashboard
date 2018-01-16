@@ -1,0 +1,114 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ static_url('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ static_url('css/uodash.css') }}">
+    <link rel="stylesheet" href="{{ static_url('css/leaflet.css') }}">
+    <script src="{{ static_url('js/jquery.min.js') }}"></script>
+    <script src="{{ static_url('js/tether.min.js') }}"></script>
+    <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
+    <script src="{{ static_url('js/leaflet.js') }}"></script>
+    <script src="{{ static_url('js/d3.v3.min.js') }}"></script>
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <!-- Navbar -->
+    {% include "navbar.html" %}
+    <!-- Main Body -->
+    <div class="jumbotron">
+      <h1 class="display-3">HaDiVe</h1>
+      <p class="lead">The Human Detection in Video (HaDiVe) project is a culmination of work undertaken by
+        faculty and students at the NYU Center for Urban Science + Progress. Using <a href="http://dotsignals.org">publicly available
+          video streams</a></p>
+      <hr class="my-4">
+      <p class="lead">The HaDiVe project
+        aims to create a real-time pedestrian counter within New York City. At present, counts
+        are recorded at approximately one minute intervals for each camera. Ultimately, this is
+        being accomplished using a Faster Region-based Convolutional Neural Network
+        (Faster R-CNN) trained with a hand-labelled set of DOT images. Visit the active <a href="https://github.com/gdobler/hadive">
+          GitHub repo</a></p>
+      <p class="lead">
+        <a class="btn btn-primary btn-lg" href="#vis" role="button">Learn more</a>
+      </p>
+    </div>
+
+    <div class="jumbotron" id="vis">
+      <h3 class="display-6"><u>Counts Visualization:</u><br/><br/></h3>
+      <div class="container">
+        <div class="row justify-content-md-center max-auto">
+          <div class="col-md-7 map", id="map">
+          </div>
+          <div class="col-md-4 cam">
+            <div class="row">
+              <div class="col-md-12 cam", id="cam">
+                <small class="text-muted">Select a point on map to view camera info</small>
+              </div>
+              <br/>
+              <div class="col-md-12 side", id="desc">
+              </div>
+            </div>
+          </div>
+        </div>
+        <br/><br/>
+        <div class="row justify-context-md-center max-auto">
+          <div class="col-sm-12 mh-100" style="width: 20em; height: 10em;" id="plot">
+            <div class="map_placeholder" id="map_placeholder">
+              <small class="text-muted">Select a point on map to visualize pedestrian count</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h3 class="display-6"><u>Examples:</u></h3>
+      <div class="row justify-content-md-center">
+        <p class="lead">With the current training and test set, the Faster R-CNN is achieving 51% precision
+          identifying people. Together, the images below illustrate the current successes and
+          shortcomings of the current iteration. As seen, the model is confidently identifying
+          individuals in the foreground of the images. However, individuals who are distant from the
+          camera or partially occluded are not being identified. Expanding the current training set
+          is likely to improve overall performance. Nonetheless, current results may inform the
+          relative number of pedestrians throughout the city at an granular temporal scale.</p>
+        <br/>
+        <br/>
+        <img class="img-fluid" src="/static/imgs/ex1.png" style="max-height:400px; width:auto;"</img>
+             <img class="img-fluid" src="/static/imgs/ex2.png" style="max-height:400px; width:auto;"</img>
+                  </div>
+    </div>
+    <hr>
+    <div class="card border-primary mb-3 mx-auto" style="max-width: 40rem;">
+      <div class="card-header">Download Data</div>
+      <div class="card-body text-success">
+        <h4 class="card-title"></h4>
+        <p class="card-text text-center">All data from the previous month is available for download</br></br>
+          <a href="https://www.dropbox.com/sh/xfec6eknacirwab/AAAdzHGIkTHK173wq7BynCl6a?dl=0" target="_blank">
+            <button type="button" class="btn btn-outline-success">Download</button></p></a>
+      </div>
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-warning" role="progressbar" style="width: 25%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+
+    <div class="container mx-auto" id="credit">
+      <div class="row">
+        <h3 class="display-6">Credits:</h3>
+        <div class="col-6 mx-auto text-center">
+          <br/>
+          <p class="lead"> Prof. Gregory Dobler, Trang Dam, and Jordan Vani</p>
+          <p> Center for Urban Science + Progress</p>
+          <p> 2017 NYU CUSP. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{ static_url('js/hadive-plot.js') }}"></script>
+
+    <!-- Footer -->
+    {% include "footer.html" %}
+
+  </body>
+</html>

@@ -4,16 +4,112 @@ html {
     position: relative;
     min-height: 100%;
 }
+
+h1 {
+    margin-left: 20px;
+    font-size: 5.9vw;
+}
+h2 {
+    margin-left: 20px;
+    font-size: 3.0vh;
+}
+p {
+    margin-left: 20px;
+    font-size: 2vmin;
+}
+
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    background-image: url('/static/imgs/bg.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size:cover;
+    background-color: #999;
+    margin-bottom: 50px;
 }
-.footer {
+/*
+div {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+*/
+img {
+    display: block;
+    margin: 0 auto;
+    width: auto;
+    height: auto;
+}
+
+.svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 25%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
     position: absolute;
+    top: 10px;
+    left: 0;
+}
+
+.map{
+    float:left;
+    width:640px;
+    height:460px;
+    display:table-cell;
+}
+
+.side{
+    float:left;
+    width:330px;
+    height:220px;
+    padding:15px;
+    display:table-cell;
+}
+
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.focus circle {
+    fill: none;
+    stroke: black;
+}
+
+.bottom-text {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    margin-bottom: 100px;
+    margin-left:-150px
+}
+
+.footer {
+    /*background-color: #f5f5f5;*/
+    position: fixed;
     bottom: 0;
     width: 100%;
-    padding-top: 5px;
-    /* Set the fixed height of the footer here */
     height: 40px;
-    background-color: #f5f5f5;
+    line-height: 40px;
+    padding-top: 5px;
+    padding-right: 40px;
 }

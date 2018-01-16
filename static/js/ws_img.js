@@ -22,7 +22,7 @@ $d9_tl.hide();
 // If site is accessed when cams are not live
 var hour_now = new Date().getHours();
 if (hour_now >= 8 && hour_now <=21){
-    $message.attr("class", 'label label-danger');
+    $message.attr("class", 'badge badge-pill badge-danger');
     $message.text('Not Live');
     var pre_message = "Cameras are Not live Now</br>"
     pre_message = pre_message.fontsize("4").fontcolor("#000000");
@@ -38,11 +38,11 @@ if (hour_now >= 8 && hour_now <=21){
 else {
     
     //var ws = new WebSocket("ws://localhost:8888/realtime");
-    var ws = new WebSocket("ws://dashsense.cusp.nyu.edu/realtime");
+    var ws = new WebSocket("wss://cuspuo.org/realtime");
     ws.binaryType = 'arraybuffer';
     
     ws.onopen = function(){
-        $message.attr("class", 'label label-info');
+        $message.attr("class", 'badge badge-pill badge-info');
         $message.text("Connecting");
         console.log("connection was established");
         d6img.src = "/static/imgs/loading.gif";
@@ -59,7 +59,7 @@ else {
         pre_panel_text.style.textAlign="center";
         setTimeout( function(){
 	    if (!message_received_once){
-	        $message.attr("class", 'label label-warning');
+	        $message.attr("class", 'badge badge-pill badge-warning');
 	        $message.text('Error');
 	        var pre_message = "Connecting to the Live Feed is taking longer than usual.</br>" +
                     "While I try to connect, here are the timelapse videos from previous night";
@@ -85,7 +85,7 @@ else {
         var cam_name = json_data.cam_name;
         arrayBuffer = json_data.img;
         message_received_once = true;
-        $message.attr("class", 'label label-success');
+        $message.attr("class", 'badge badge-pill badge-success');
         $message.text("Live");
         // hide the timelapse if it was playing
         $d6_tl.hide();
@@ -128,13 +128,13 @@ else {
     ws.onclose = function(ev){
         $d6_tl.show();
         $d9_tl.show();
-        $message.attr("class", 'label label-danger');
+        $message.attr("class", 'badge badge-pill badge-danger');
         $message.text('Not Live');
         console.log("connection was closed");
     };
     
     ws.onerror = function(ev){
-        $message.attr("class", 'label label-warning');
+        $message.attr("class", 'badge badge-pill badge-secondary');
         $message.text('Error');
         var message = "Could not connect to the Live Feed. <br/> Contact mohit.sharma@nyu.edu";
         message = message.fontsize("4").fontcolor("#000000").bold();
