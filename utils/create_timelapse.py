@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
+##
+##
+## Check the code first! It maybe deleting the RAW files as well!!!!
+##
+##
 import os
+import re
 import sys
 import glob
 import time
@@ -60,10 +66,14 @@ def convert_to_png(f, rot, outpath):
         grn = img[::2, 1::2]
         red = img[::2, ::2]
         blu = img[1::2, 1::2]
-        im  = toimage(np.rot90(np.dstack((red, grn, blu)), rot))
+        rgb = np.dstack((red, grn, blu))
+        # gain
+        rgb = (rgb * 5.0).clip(0, 255).astype(np.uint8)
+        im  = toimage(np.rot90(rgb, rot))
         immtime = str(os.path.getmtime(f))
         cam_type = os.path.basename(f).split('_')[1]
-        im.save(os.path.join(outpath, cam_type+"-"+immtime+str(".png")))
+        #im.save(os.path.join(outpath, cam_type+"-"+immtime+str(".png")))
+        im.save(os.path.join(outpath, cam_type+"-"+f.split("_")[-1][:-4]+str(".png")))
     except Exception as ex:
         print("Exception in convert_to_png: "+str(ex))
 
@@ -104,6 +114,11 @@ def _create_timelapse(cam_name, pngdir, out_dir):
                      + " -y"], 
                     shell=True)
 
+def natural_sort(l): 
+    convert = lambda text: int(text) if text.isdigit() else text.lower() 
+    alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
+    return sorted(l, key = alphanum_key)
+    
 if __name__ == "__main__":
     today = datetime.datetime.now()
     yesterday = today - datetime.timedelta(days=1)
@@ -125,9 +140,11 @@ if __name__ == "__main__":
     d6_path = os.path.join(inpath, "*d6_")
     d9_path = os.path.join(inpath, "*d9_")
     print("Scanning all the D6 files ... ")
-    d6_files  = sorted(glob.glob(d6_path+"*.raw"), key=os.path.getmtime)
+    #d6_files  = sorted(glob.glob(d6_path+"*.raw"), key=os.path.getctime)
+    d6_files  = natural_sort(glob.glob(d6_path+"*.raw"))
     print("Scanning all the D9 files ... ")
-    d9_files  = sorted(glob.glob(d9_path+"*.raw"), key=os.path.getmtime)
+    #d9_files  = sorted(glob.glob(d9_path+"*.raw"), key=os.path.getctime)
+    d9_files  = natural_sort(glob.glob(d9_path+"*.raw"))
     len_d6 = len(d6_files)
     len_d9 = len(d9_files)
     # Go ballistic with the processor
@@ -156,4 +173,11 @@ if __name__ == "__main__":
     sftpclient.close()
     # (Force-)Cleanup the pngdir
     shutil.rmtree(pngdir, ignore_errors=True)
+    ##
+    ##
+    ## -- Deleting RAW files as well!!
+    ##
+    ##
+    # For test cleaning rawdir
+    shutil.rmtree(inpath, ignore_errors=True)
     print("[Finished]: ",datetime.datetime.now())
