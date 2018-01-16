@@ -38,7 +38,7 @@ if (hour_now >= 8 && hour_now <=21){
 else {
     
     //var ws = new WebSocket("ws://localhost:8888/realtime");
-    var ws = new WebSocket("wss://dashsense.cusp.nyu.edu/realtime");
+    var ws = new WebSocket("wss://cuspuo.org/realtime");
     ws.binaryType = 'arraybuffer';
     
     ws.onopen = function(){
