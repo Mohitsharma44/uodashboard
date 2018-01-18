@@ -24,11 +24,13 @@
               <h4 class="card-title">{{ cam1 }}</h4>
               <div class="embed-responsive embed-responsive-1by1">
                 <video class="embed-responsive-item" id="d6_timelapse" style="display:block; margin: 0 auto;" width="640" height="480" autoplay loop>
-                  <source src="/static/timelapses/d6.mp4" type="video/mp4">
+                  <!-- if Firefox -->
+                  <source src="/static/timelapses/d6.webm" type="video/webm" />
+                  <!-- if Safari/Chrome-->
+                  <source src="/static/timelapses/d6.mp4" type="video/mp4" />
                 </video>
                 <img id="AudubonCamD6"></img>
               </div>
-              <img id="AudubonCamD6"></img>
               <p class="card-text" id="optional_d6_text"></p>
             </div>
           </div>
@@ -40,11 +42,13 @@
               <h4 class="card-title">{{ cam2 }}</h4>
               <div class="embed-responsive embed-responsive-1by1">
                 <video class="embed-responsive-item" id="d6_timelapse" style="display:block; margin: 0 auto;" width="640" height="480" autoplay loop>
-                  <source src="/static/timelapses/d9.mp4" type="video/mp4">
+                  <!-- if Firefox -->
+                  <source src="/static/timelapses/d9.webm" type="video/webm" />
+                  <!-- if Safari/Chrome-->
+                  <source src="/static/timelapses/d9.mp4" type="video/mp4" />
                 </video>
                 <img id="AudubonCamD9"></img>
               </div>
-              <img id="AudubonCamD9"></img>
               <p class="card-text" id="optional_d9_text"></p>
             </div>
           </div>
