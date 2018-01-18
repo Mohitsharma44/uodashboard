@@ -90,8 +90,7 @@ def _convert_mp4_webm(fname):
                      + " -c:v libvpx-vp9"
                      + " -crf 30"
                      + " -b:v 0"
-                     + " {outfile}".format(outfile=os.path.join(out_dir,
-                                                               fname[:-3]+"webm"))
+                     + " {outfile}".format(outfile=fname[:-3]+"webm")
                      + " -y"],
                     shell=True)
 
@@ -133,15 +132,15 @@ def _create_timelapse(cam_name, pngdir, out_dir):
                     shell=True)
     _convert_mp4_webm(outfile)
 
-def natural_sort(l): 
-    convert = lambda text: int(text) if text.isdigit() else text.lower() 
-    alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
+def natural_sort(l):
+    convert = lambda text: int(text) if text.isdigit() else text.lower()
+    alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ]
     return sorted(l, key = alphanum_key)
-    
+
 if __name__ == "__main__":
     cam_names = ["d6", "d9"]
     today = datetime.datetime.now()
-    yesterday = today - datetime.timedelta(days=12)
+    yesterday = today - datetime.timedelta(days=1)
     print("[Starting]: ", today)
     basepath= os.getenv("audubon_datamart")
     remote_tl_dir = os.getenv("dashsense_tl_dir")
@@ -178,16 +177,12 @@ if __name__ == "__main__":
     print()
     print()
     print("Creating Timelapse ... ")
+    print("*(due to the nature of this process, the progressbar may show only 50% complete but in essense it completes 100%)")
     print(pngdir)
-    for k, _ in enumerate(p.map(_create_timelapse, zip(cam_name=iter(cam_names), pngdir=itertools.repeat(pngdir), outdir=itertools.repeat(outdir)))):
+    for k, _ in enumerate(p.imap_unordered(create_timelapse, zip(iter(cam_names), itertools.repeat(pngdir), itertools.repeat(tl_outdir)))):
         printProgressBar(k, len(cam_names), prefix='Timelapse Progress', suffix='Complete', length=50)
     print()
     print()
-    #d6mp4 = _create_timelapse(cam_name="d6", pngdir=pngdir, out_dir=tl_outdir)
-    #d9mp4 = _create_timelapse(cam_name="d9", pngdir=pngdir, out_dir=tl_outdir)
-    #d6webm = _convert_mp4_webm(fname=d6mp4)
-    #d9webm = _convert_mp4_webm(fname=d9mp4)
-    """
     host = "dashsense.cusp.nyu.edu"
     port = 22
     username = "mohitsharma44"
@@ -200,7 +195,6 @@ if __name__ == "__main__":
             print("SFTPing: "+str(_file))
             sftpclient.put(_file, os.path.join(remote_tl_dir, os.path.basename(_file)))
     sftpclient.close()
-    """
     # (Force-)Cleanup the pngdir
     shutil.rmtree(pngdir, ignore_errors=True)
     ##
