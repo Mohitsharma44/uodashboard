@@ -21,7 +21,7 @@ $d9_tl.hide();
 
 // If site is accessed when cams are not live
 var hour_now = new Date().getHours();
-if (hour_now >= 8 && hour_now <=21){
+if (hour_now > 6 && hour_now < 21){
     $message.attr("class", 'badge badge-pill badge-danger');
     $message.text('Not Live');
     var pre_message = "Cameras are Not live Now</br>"
