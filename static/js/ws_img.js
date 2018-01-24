@@ -57,6 +57,9 @@ else {
         message = message.fontsize("4").fontcolor("#000000").bold();
         pre_panel_text.innerHTML = message;
         pre_panel_text.style.textAlign="center";
+        // Hide timelapse video at first
+        $d6_tl.hide();
+        $d9_tl.hide();
         setTimeout( function(){
 	    if (!message_received_once){
 	        $message.attr("class", 'badge badge-pill badge-warning');
