@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ static_url('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ static_url('css/uodash.css') }}">
+    <script src="{{ static_url('js/jquery.min.js') }}"></script>
+    <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
+  </head>
+  <body>
+    <!-- NavBar -->
+    {% include "navbar.html" %}
+    <!-- Main Body -->
+    <div class="row h-100">
+      <div class="col-sm-12 my-auto">
+        <div class="login-placeholder-bg">
+          <h1 align="center">
+            <p class="lead"></p>
+          </h1>
+          <div class="center">
+            <img src="/static/imgs/cuspuo_logo.png">
+            <h2 align="center">
+              Coming Soon ...
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    {% include "footer.html" %}
+  </body>
+</html>
