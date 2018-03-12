@@ -44,7 +44,22 @@ class IndexHandler(web.RequestHandler):
     """
     def get(self):
         self.render("index.html", title="index")
-        
+
+
+class PubHandler(web.RequestHandler):
+    """
+    Class to handle index page
+    """
+    def get(self):
+        self.render("UOpublications.html", title="UO publications")
+
+class comingsoonHandler(web.RequestHandler):
+    """
+    Class to handle index page
+    """
+    def get(self):
+        self.render("comingsoon.html", title="comint soon")
+
 class LoginHandler(BaseHandler):
     def get(self):
         try:
@@ -153,6 +168,8 @@ app = web.Application(
         (r'/realtime', RealtimeHandler),
         (r'/upload', ApiHandler),
         (r'/', IndexHandler),
+        (r'/uopublications', PubHandler),
+        (r'/comingsoon', comingsoonHandler),        
         (r'/projects/audubon', AudubonHandler),
         (r'/projects/hadive', HadiveHandler),
     ],
