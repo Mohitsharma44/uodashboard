@@ -1,3 +1,4 @@
+
 import os
 import json
 import time
@@ -167,6 +168,7 @@ app = web.Application(
         (r'/logout', LogoutHandler),
         (r'/realtime', RealtimeHandler),
         (r'/upload', ApiHandler),
+        (r'/index', IndexHandler),
         (r'/', IndexHandler),
         (r'/uopublications', PubHandler),
         (r'/comingsoon', comingsoonHandler),        
