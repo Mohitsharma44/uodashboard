@@ -168,13 +168,13 @@ app = web.Application(
         (r'/logout', LogoutHandler),
         (r'/realtime', RealtimeHandler),
         (r'/upload', ApiHandler),
-        (r'/index', IndexHandler),
         (r'/', IndexHandler),
         (r'/uopublications', PubHandler),
         (r'/comingsoon', comingsoonHandler),        
         (r'/projects/audubon', AudubonHandler),
         (r'/projects/hadive', HadiveHandler),
     ],
+    default_handler_class=comingsoonHandler,
     **settings,
 )
 
